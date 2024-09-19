@@ -39,5 +39,5 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   @IsValidCurrency()
-  currency: string;
+  currency: 'TWD' | 'USD';
 }

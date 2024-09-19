@@ -1,14 +1,17 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { CreateOrderDto } from 'src/orders/dto/create-order.dto';
+import { OrdersService } from './orders.service';
 
 @Controller('api/orders')
 export class OrdersController {
+  constructor(private readonly ordersService: OrdersService) {}
+
   @Post()
   createOrder(@Body() createOrderDto: CreateOrderDto) {
-    // 這裡可以添加額外的驗證邏輯
+    const transformedOrder = this.ordersService.transform(createOrderDto);
     return {
-      message: '訂單格式有效',
-      order: createOrderDto,
+      message: '有效的訂單格式',
+      order: transformedOrder,
     };
   }
 }
