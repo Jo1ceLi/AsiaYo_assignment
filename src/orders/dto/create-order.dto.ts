@@ -1,9 +1,10 @@
-import { IsString, ValidateNested } from 'class-validator';
+import { ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IsEnglishOnly, IsCapitalized } from './validators/name-validator';
 import { IsLessThanTwoThousand } from './validators/price-validator';
 import { IsValidCurrency } from './validators/currency-validator';
 import { IsRequiredField } from './validators/is-required-field-validator';
+import { IsString } from './validators/is-string-validator';
 
 class AddressDto {
   @IsRequiredField()
