@@ -1,7 +1,8 @@
 import { IsString, ValidateNested, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsEnglishOnly, IsCapitalized } from './name-validator';
-import { IsLessThanTwoThousand } from './price-validator';
+import { IsEnglishOnly, IsCapitalized } from './validators/name-validator';
+import { IsLessThanTwoThousand } from './validators/price-validator';
+
 class AddressDto {
   @IsString()
   city: string;
