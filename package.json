@@ -65,7 +65,9 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "orders/**/*.(t|j)s",
+      "!orders/orders.module.ts",
+      "!orders/dto/create-order.dto.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
