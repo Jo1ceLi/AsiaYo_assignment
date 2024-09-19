@@ -21,7 +21,7 @@ describe('IsLessThanTwoThousand', () => {
     expect(errors.length).toBe(0);
   });
 
-  it('應該失敗驗證當價格大於2000', async () => {
+  it('應該拒絕當價格大於2000', async () => {
     const test = new TestClass();
     test.price = 2001;
     const errors = await validate(test);
