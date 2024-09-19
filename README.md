@@ -55,33 +55,43 @@ order的數量級會是bnb的100倍以上，因此order可能才會是瓶頸所�
 
 # API 實作測驗
 
+### 說明:
+此專案使用NestJS框架，在這個專案中，可以將請求的流程簡化如下
+Request -> Controller (router) -> DTO decorator (validator)-|
+Response <- Controller (router) <- Service (transform)  <---|
+
+### 運行方法:
+```
+docker build -t asiayo_jo1ce_assignment .
+docker run -p 3000:3000 -d asiayo_jo1ce_assignment
+```
+
+### 單元測試
+`docker compose up`
+
 規格模糊的部分:
 - 因題目中給的範例沒有提供哪些屬性是必填，採取所有屬性都是必填，且額外多出的屬性，將不會被額外處理及報錯的方式。
 
-題目需求: 
+題目需求:
 - 此應用程式將有一支 endpoint 為 POST /api/orders 的 API 作為輸入點
     - `src/orders/orders.controller.ts` 作為API輸入點
-- [ ] SOLID
+- SOLID
+    - 單一職責原則: 我將每個驗證器(validator)都專屬於它自己的職責，如`@IsRequiredField`只做檢查必填的工作
+    - 開放封閉原則: 將相同業務邏輯(orders)的Module、Controller、Service作為分層，可以開放擴充其他業務邏輯，如: `OrderService`假設原先是處理換算匯率後下單，之後有需求是不需要再經由`OrderService`換算，可以直接呼叫第三方下單，此時就可以新增一個`ViaThirdPartyOrderService`來替換掉原先的`OrderService`
+    - 介面隔離原則: orders.service.ts 中的方法`convertCurrency`，不應該任意給其他注入此order service的角色使用，因此範圍設為`private`
+    - 依賴反向原則: 延續開放封閉原則的概念，在Order Controller中的`constructor` 可以任意抽換成相同介面但不同業務邏輯的Services
+
 - 此 API 需按照以下心智圖之所有情境,處理訂單檢查格式與轉換的功能。
     - 檢查必要欄位及指定型態: `src/orders/dto/validators/` (檢查 必填、字串、貨幣、名字、價錢)
     - 將訂單送到service做訂單格式檢查與轉換: 因上一步驟已經完成檢查，因此這步驟只負責轉換，也比較符合單一責任原則，於`src/orders/orders.service.ts`做轉換
     - 返回檢查與轉換結果: controller -> service 通過後，會在返回controller做response的回傳
 
-- 以下所有情境皆需附上單元測試,覆蓋成功與失敗之案例。
+> 單元測試截圖
+    1. 測試檔案
 
-1. 測試指令 `docker compose up`
+    ![image](https://github.com/user-attachments/assets/ba8a11fd-2483-42b4-b570-b5f43b743452)
 
-2. 測試檔案
+    2. 測試結果截圖
 
-![image](https://github.com/user-attachments/assets/ba8a11fd-2483-42b4-b570-b5f43b743452)
+    ![image](https://github.com/user-attachments/assets/4c5256f4-70ea-44a0-a838-bd9cfe03d9b9)
 
-3. 測試結果截圖
-
-![image](https://github.com/user-attachments/assets/4c5256f4-70ea-44a0-a838-bd9cfe03d9b9)
-
-
-- 請使用 docker 包裝您的環境。
-```
-docker build -t asiayo_jo1ce_assignment .
-docker run -p 3000:3000 -d asiayo_jo1ce_assignment
-```
