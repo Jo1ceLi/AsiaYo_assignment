@@ -2,6 +2,7 @@ import { IsString, ValidateNested, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IsEnglishOnly, IsCapitalized } from './validators/name-validator';
 import { IsLessThanTwoThousand } from './validators/price-validator';
+import { IsValidCurrency } from './validators/currency-validator';
 
 class AddressDto {
   @IsString()
@@ -33,9 +34,10 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   @IsLessThanTwoThousand()
-  price: number;
+  price: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsValidCurrency()
   currency: string;
 }
