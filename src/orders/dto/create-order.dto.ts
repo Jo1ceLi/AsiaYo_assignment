@@ -1,6 +1,7 @@
-import { IsString, IsNumber, ValidateNested } from 'class-validator';
+import { IsString, ValidateNested, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IsEnglishOnly, IsCapitalized } from './name-validator';
+import { IsLessThanTwoThousand } from './price-validator';
 class AddressDto {
   @IsString()
   city: string;
@@ -13,21 +14,27 @@ class AddressDto {
 }
 
 export class CreateOrderDto {
+  @IsNotEmpty()
   @IsString()
   id: string;
 
+  @IsNotEmpty()
   @IsString()
   @IsEnglishOnly()
   @IsCapitalized()
   name: string;
 
+  @IsNotEmpty()
   @ValidateNested()
   @Type(() => AddressDto)
   address: AddressDto;
 
-  @IsNumber()
+  @IsNotEmpty()
+  @IsString()
+  @IsLessThanTwoThousand()
   price: number;
 
+  @IsNotEmpty()
   @IsString()
   currency: string;
 }
