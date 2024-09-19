@@ -42,4 +42,46 @@ describe('OrdersService', () => {
       });
     });
   });
+
+  describe('transform', () => {
+    it('應該正確轉換貨幣並更新 CreateOrderDto', () => {
+      const mockCreateOrderDto: CreateOrderDto = {
+        price: '100',
+        currency: 'USD',
+        id: '1',
+        name: 'test',
+        address: {
+          city: 'test',
+          street: 'test',
+          district: 'test',
+        },
+      };
+
+      const result = service.transform(mockCreateOrderDto);
+
+      expect(result.price).toBe('3100');
+      expect(result.currency).toBe('TWD');
+      expect(result).toBe(mockCreateOrderDto);
+    });
+
+    it('當貨幣已經是 TWD 時不應該改變價格', () => {
+      const mockCreateOrderDto: CreateOrderDto = {
+        price: '1000',
+        currency: 'TWD',
+        id: '1',
+        name: 'test',
+        address: {
+          city: 'test',
+          street: 'test',
+          district: 'test',
+        },
+      };
+
+      const result = service.transform(mockCreateOrderDto);
+
+      expect(result.price).toBe('1000');
+      expect(result.currency).toBe('TWD');
+      expect(result).toBe(mockCreateOrderDto);
+    });
+  });
 });
